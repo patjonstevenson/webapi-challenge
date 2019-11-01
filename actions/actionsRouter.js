@@ -36,10 +36,10 @@ router.put("/:id", validateId, validateProjectId, async (req, res) => {
     const { id } = req.params;
     const changes = req.body;
     try {
-        const newAction = await actionsDb.insert(id, changes);
+        const newAction = await actionsDb.update(id, changes);
         res.status(201).json(newAction);
     } catch (error) {
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: "Internal server error when updating resource" });
     }
 });
 
@@ -62,7 +62,7 @@ async function validateId(req, res, next) {
         if (!actions) res.status(404).json({ message: "Resource with given id is not available" });
         next();
     } catch (error) {
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: "Internal server error when validating Id" });
     }
 }
 
@@ -73,7 +73,7 @@ async function validateProjectId(req, res, next) {
         if (!project) res.status(404).json({ message: "Resource with given id is not available" });
         next();
     } catch (error) {
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: "Internal server error when validating project ID" });
     }
 }
 
