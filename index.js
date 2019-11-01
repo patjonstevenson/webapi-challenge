@@ -15,7 +15,10 @@ Go code!
 
 const express = require("express");
 const server = express();
+const logger = require("./middleware/logger-middleware");
+
 server.use(express.json());
+server.use(logger);
 
 require("dotenv").config();
 
