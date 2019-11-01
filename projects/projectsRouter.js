@@ -24,6 +24,16 @@ router.get("/:id", validateId, async (req, res) => {
     }
 });
 
+router.get("/:id/actions", validateId, async (req, res) => {
+    const { id } = req.params;
+    try {
+        const actions = await projectsDb.getProjectActions(id);
+        res.status(200).json(actions);
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error getting the project actions", id });
+    }
+});
+
 router.post("/", async (req, res) => {
     const project = req.body;
     try {
