@@ -1,6 +1,7 @@
 const router = require("express").Router();
 
 const actionsDb = require("../data/helpers/actionModel");
+const projectsDb = require("../data/helpers/projectModel");
 
 router.get("/", async (req, res) => {
     try {
@@ -21,7 +22,7 @@ router.get("/:id", validateId, async (req, res) => {
     }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", validateProjectId, async (req, res) => {
     const action = req.body;
     try {
         const newAction = await actionsDb.insert(action);
@@ -31,21 +32,48 @@ router.post("/", async (req, res) => {
     }
 });
 
-router.put("/:id", async (req, res) => {
-
+router.put("/:id", validateId, validateProjectId, async (req, res) => {
+    const { id } = req.params;
+    const changes = req.body;
+    try {
+        const newAction = await actionsDb.insert(id, changes);
+        res.status(201).json(newAction);
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error" });
+    }
 });
 
-router.delete("/:id", async (req, res) => {
-
+router.delete("/:id", validateId, async (req, res) => {
+    const { id } = req.params;
+    try {
+        const deleted = await actionsDb.remove(id);
+        if (!deleted) res.status(500).json({ message: "Resource could not be deleted" });
+        res.status(200).json({ id });
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error" });
+    }
 });
 
 // custom middleware
 async function validateId(req, res, next) {
+    const { id } = req.params;
     try {
         const actions = await actionsDb.get(id);
+        if (!actions) res.status(404).json({ message: "Resource with given id is not available" });
         next();
     } catch (error) {
-        res.status(404).json({ message: "Resource with given id is not available" });
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+async function validateProjectId(req, res, next) {
+    const { project_id } = req.body;
+    try {
+        const project = await projectsDb.get(project_id);
+        if (!project) res.status(404).json({ message: "Resource with given id is not available" });
+        next();
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error" });
     }
 }
 
