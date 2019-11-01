@@ -2,6 +2,8 @@ const router = require("express").Router();
 
 const projectsDb = require("../data/helpers/projectModel");
 
+const validateId = require("../middleware/validateId-middleware")(projectsDb);
+
 // Route Handlers
 router.get("/", async (req, res) => {
     try {
@@ -53,17 +55,5 @@ router.delete("/:id", validateId, async (req, res) => {
         res.status(500).json({ message: `Internal server error when deleting action with id ${id}` });
     }
 });
-
-// Custom Middleware
-async function validateId(req, res, next) {
-    const { id } = req.params;
-    try {
-        const actions = await projectsDb.get(id);
-        if (!actions) res.status(404).json({ message: "Resource with given id is not available", id });
-        next();
-    } catch (error) {
-        res.status(500).json({ message: "Internal server error when validating Id" });
-    }
-}
 
 module.exports = router;
