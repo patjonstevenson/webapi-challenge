@@ -3,12 +3,13 @@ const router = require("express").Router();
 const actionsDb = require("../data/helpers/actionModel");
 const projectsDb = require("../data/helpers/projectModel");
 
+// Route Handlers
 router.get("/", async (req, res) => {
     try {
         const actions = await actionsDb.get();
         res.status(200).json(actions);
     } catch (error) {
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: "Internal server error when getting the actions" });
     }
 });
 
@@ -18,7 +19,7 @@ router.get("/:id", validateId, async (req, res) => {
         const actions = await actionsDb.get(id);
         res.status(200).json(actions);
     } catch (error) {
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: `Internal server error getting the action with id ${id}` });
     }
 });
 
@@ -28,7 +29,7 @@ router.post("/", validateProjectId, async (req, res) => {
         const newAction = await actionsDb.insert(action);
         res.status(201).json(newAction);
     } catch (error) {
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: `Internal server error posting action ${action}` });
     }
 });
 
@@ -39,7 +40,7 @@ router.put("/:id", validateId, validateProjectId, async (req, res) => {
         const newAction = await actionsDb.update(id, changes);
         res.status(201).json(newAction);
     } catch (error) {
-        res.status(500).json({ message: "Internal server error when updating resource" });
+        res.status(500).json({ message: `Internal server error when updating the action with id ${id}` });
     }
 });
 
@@ -47,14 +48,14 @@ router.delete("/:id", validateId, async (req, res) => {
     const { id } = req.params;
     try {
         const deleted = await actionsDb.remove(id);
-        if (!deleted) res.status(500).json({ message: "Resource could not be deleted" });
+        if (!deleted) res.status(500).json({ message: `Action with id ${id} could not be deleted` });
         res.status(200).json({ id });
     } catch (error) {
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: `Internal server error when deleting action with id ${id}` });
     }
 });
 
-// custom middleware
+// Custom Middleware
 async function validateId(req, res, next) {
     const { id } = req.params;
     try {
