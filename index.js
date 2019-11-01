@@ -17,6 +17,8 @@ const express = require("express");
 const server = express();
 server.use(express.json());
 
+require("dotenv").config();
+
 const projectsRouter = require("./projects/projectsRouter");
 const actionsRouter = require("./actions/actionsRouter");
 

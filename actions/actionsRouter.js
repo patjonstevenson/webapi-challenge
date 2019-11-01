@@ -2,23 +2,23 @@ const router = require("express").Router();
 
 const actionsDb = require("../data/helpers/actionModel");
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
+    
+});
+
+router.get("/:id", async (req, res) => {
 
 });
 
-router.get("/:id", (req, res) => {
+router.post("/:id", async (req, res) => {
 
 });
 
-router.post("/:id", (req, res) => {
+router.put("/:id", async (req, res) => {
 
 });
 
-router.put("/:id", (req, res) => {
-
-});
-
-router.delete("/:id", (req, res) => {
+router.delete("/:id", async (req, res) => {
 
 });
 
