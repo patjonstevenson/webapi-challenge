@@ -26,13 +26,25 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 
 - [ ] Mention two parts of Express that you learned about this week.
 
-- [ ] Describe Middleware?
+	API / Endpoints / Route Handling
+	Middleware
 
-- [ ] Describe a Resource?
+- [ ] Describe Middleware.
+
+	Small functions that extend Express's basic functionality.
+
+- [ ] Describe a Resource.
+
+	Content or functionality available at a specific URI or endpoint
 
 - [ ] What can the API return to help clients know if a request was successful?
 
+	Status codes
+
 - [ ] How can we partition our application into sub-applications?
+
+	Routing - we can write endpoints that share a base uri separately from others
+	Middleware can also be written in separate files
 
 ## Project Setup
 
